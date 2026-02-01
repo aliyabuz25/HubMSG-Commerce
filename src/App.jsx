@@ -5,6 +5,7 @@ import Features from './components/Features'
 import AICRM from './components/AICRM'
 import Chatbot from './components/Chatbot'
 import APITest from './components/APITest'
+import BrandCarousel from './components/BrandCarousel'
 import Pricing from './components/Pricing'
 import LogoCarousel from './components/LogoCarousel'
 import CTA from './components/CTA'
@@ -14,6 +15,8 @@ import SupportWidget from './components/SupportWidget'
 
 function App() {
     const [isLangModalOpen, setIsLangModalOpen] = useState(false)
+    const [isSupportOpen, setIsSupportOpen] = useState(false)
+    const [selectedPlan, setSelectedPlan] = useState(null)
     const [currentLang, setCurrentLang] = useState('az')
     const [isTranslating, setIsTranslating] = useState(false)
 
@@ -51,7 +54,7 @@ function App() {
                     if (!parent) return NodeFilter.FILTER_REJECT;
                     const tag = parent.tagName.toLowerCase();
                     if (['script', 'style', 'i', 'code'].includes(tag)) return NodeFilter.FILTER_REJECT;
-                    if (parent.closest('#lang-modal') || parent.closest('#translation-loader') || parent.closest('.logo') || parent.closest('.fa-brands')) return NodeFilter.FILTER_REJECT;
+                    if (parent.closest('#lang-modal') || parent.closest('#translation-loader') || parent.closest('.logo') || parent.closest('.fa-brands') || parent.closest('.notranslate')) return NodeFilter.FILTER_REJECT;
                     if (node.textContent.trim().length < 2) return NodeFilter.FILTER_REJECT;
                     return NodeFilter.FILTER_ACCEPT;
                 }
@@ -114,7 +117,11 @@ function App() {
                 </section>
 
                 <APITest />
-                <Pricing />
+                <BrandCarousel />
+                <Pricing onSelectPlan={(plan) => {
+                    setSelectedPlan(plan);
+                    setIsSupportOpen(true);
+                }} />
                 <LogoCarousel />
                 <CTA />
             </main>
@@ -130,7 +137,15 @@ function App() {
                 }}
             />
 
-            <SupportWidget />
+            <SupportWidget
+                isOpen={isSupportOpen}
+                onOpen={() => setIsSupportOpen(true)}
+                onClose={() => {
+                    setIsSupportOpen(false);
+                    setSelectedPlan(null);
+                }}
+                initialPlan={selectedPlan}
+            />
 
             {isTranslating && (
                 <div id="translation-loader" className="fixed inset-0 z-[5000] bg-primary/40 backdrop-blur-md flex items-center justify-center text-white">

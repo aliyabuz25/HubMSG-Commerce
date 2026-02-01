@@ -1,0 +1,19 @@
+services:
+  hub-landing-frontend:
+    image: hub-landing:latest
+    container_name: hub-landing
+    restart: unless-stopped
+    networks:
+      - edge
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.docker.network=edge'
+      # Domain bilgileri buraya gelecek
+      - 'traefik.http.routers.hub-landing.rule=Host(`hubmsg.octotech.az`)'
+      - 'traefik.http.routers.hub-landing.entrypoints=web'
+      # Nginx portu Dockerfile'da 80 olarak EXPOSE edildi
+      - 'traefik.http.services.hub-landing.loadbalancer.server.port=2006'
+
+networks:
+  edge:
+    external: true

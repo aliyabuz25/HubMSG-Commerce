@@ -1,7 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-const SupportWidget = () => {
-    const [isOpen, setIsOpen] = useState(false);
+const SupportWidget = ({ isOpen, onOpen, onClose, initialPlan }) => {
     const [isSending, setIsSending] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
     const [formData, setFormData] = useState({
@@ -11,6 +10,16 @@ const SupportWidget = () => {
         phone: '',
         message: ''
     });
+
+    useEffect(() => {
+        if (initialPlan) {
+            setFormData(prev => ({
+                ...prev,
+                category: 'sales',
+                message: `${initialPlan} paketi haqqında məlumat almaq istəyirəm.`
+            }));
+        }
+    }, [initialPlan]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -30,12 +39,12 @@ const SupportWidget = () => {
 
             const recipients = ['994508300030', '905464233871'];
             const requests = recipients.map(target =>
-                fetch('https://hubmsgpanel.octotech.az/api/message', {
+                fetch(`${import.meta.env.VITE_API_BASE_URL}/message`, {
                     method: 'POST',
                     mode: 'cors',
                     headers: {
                         'Content-Type': 'text/plain',
-                        'x-api-key': 'API-KEY-XXXX'
+                        'x-api-key': import.meta.env.VITE_API_KEY
                     },
                     body: JSON.stringify({
                         recipient: target,
@@ -52,7 +61,7 @@ const SupportWidget = () => {
                 setShowSuccess(true);
                 setFormData({ firstName: '', lastName: '', category: '', phone: '', message: '' });
                 setTimeout(() => {
-                    setIsOpen(false);
+                    onClose();
                     setTimeout(() => setShowSuccess(false), 500);
                 }, 3000);
             } else {
@@ -70,7 +79,7 @@ const SupportWidget = () => {
         <div className="fixed bottom-6 right-6 z-[3000]">
             {/* Support Button */}
             <button
-                onClick={() => setIsOpen(!isOpen)}
+                onClick={() => isOpen ? onClose() : onOpen()}
                 className="w-16 h-16 bg-primary text-white rounded-full shadow-2xl flex items-center justify-center text-2xl hover:scale-110 transition-transform active:scale-95 relative"
             >
                 <i className={`fa-solid ${isOpen ? 'fa-xmark' : 'fa-comments'}`}></i>
@@ -86,6 +95,9 @@ const SupportWidget = () => {
                                 <h4 className="text-xl font-bold">Dəstək Formu</h4>
                                 <p className="text-white/70 text-sm">Mesajınızı bizə bildirin</p>
                             </div>
+                            <button onClick={onClose} className="text-white/50 hover:text-white transition-colors text-xl">
+                                <i className="fa-solid fa-xmark"></i>
+                            </button>
                         </div>
                     </div>
 

@@ -5,19 +5,38 @@ const APITest = () => {
     const [showSuccess, setShowSuccess] = useState(false);
     const [formData, setFormData] = useState({ phone: '', message: '' });
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSending(true);
         setShowSuccess(false);
 
-        // Simulate API call
-        setTimeout(() => {
-            setIsSending(false);
-            setShowSuccess(true);
-            setFormData({ phone: '', message: '' });
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/message`, {
+                method: 'POST',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'text/plain',
+                    'x-api-key': import.meta.env.VITE_API_KEY
+                },
+                body: JSON.stringify({
+                    recipient: formData.phone.replace(/\D/g, ''),
+                    message: formData.message
+                })
+            });
 
-            setTimeout(() => setShowSuccess(false), 5000);
-        }, 1500);
+            if (response.ok) {
+                setShowSuccess(true);
+                setFormData({ phone: '', message: '' });
+                setTimeout(() => setShowSuccess(false), 5000);
+            } else {
+                alert('API hatası. Lütfen anahtarınızı ve linkinizi kontrol edin.');
+            }
+        } catch (error) {
+            console.error('API Test Error:', error);
+            alert('Bağlantı hatası.');
+        } finally {
+            setIsSending(false);
+        }
     };
 
     return (

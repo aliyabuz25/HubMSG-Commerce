@@ -1,13 +1,13 @@
 const LanguageModal = ({ isOpen, onClose, onSelectLang }) => {
     const languages = [
-        { code: 'az', name: 'Azərbaycan' },
-        { code: 'tr', name: 'Türkçe' },
-        { code: 'en', name: 'English' },
-        { code: 'ru', name: 'Русский' },
-        { code: 'ph', name: 'Filipino' },
-        { code: 'th', name: 'ไทย' },
-        { code: 'de', name: 'Deutsch' },
-        { code: 'jp', name: '日本語' },
+        { code: 'az', name: 'Azərbaycan', flag: '🇦🇿' },
+        { code: 'tr', name: 'Türkçe', flag: '🇹🇷' },
+        { code: 'en', name: 'English', flag: '🇬🇧' },
+        { code: 'ru', name: 'Русский', flag: '🇷🇺' },
+        { code: 'tl', name: 'Filipino', flag: '🇵🇭' }, // Changed ph to tl (Tagalog) for better GT support
+        { code: 'th', name: 'ไทย', flag: '🇹🇭' },
+        { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
+        { code: 'ja', name: '日本語', flag: '🇯🇵' }, // Changed jp to ja for standard code
     ];
 
     if (!isOpen) return null;
@@ -31,8 +31,8 @@ const LanguageModal = ({ isOpen, onClose, onSelectLang }) => {
                             onClick={() => onSelectLang(lang.code)}
                             className="flex items-center gap-3 p-3 rounded-2xl hover:bg-[#f7f6ff] transition-all text-left font-semibold text-primary group"
                         >
-                            <span className="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full text-[10px] font-bold group-hover:bg-accent transition-colors">
-                                {lang.code.toUpperCase()}
+                            <span className="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full text-lg group-hover:bg-accent transition-colors">
+                                {lang.flag}
                             </span>
                             {lang.name}
                         </button>
