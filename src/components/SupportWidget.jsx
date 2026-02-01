@@ -88,7 +88,7 @@ const SupportWidget = ({ isOpen, onOpen, onClose, initialPlan }) => {
 
             {/* Support Modal */}
             {isOpen && (
-                <div className={`absolute bottom-24 right-0 w-[350px] bg-white rounded-[32px] shadow-2xl border border-black/5 overflow-hidden transition-all duration-300 origin-bottom-right animate-[scaleIn_0.3s_ease-out]`}>
+                <div className={`fixed bottom-24 left-4 right-4 md:absolute md:left-auto md:right-0 w-auto md:w-[350px] max-h-[70vh] md:max-h-none overflow-y-auto md:overflow-visible bg-white rounded-3xl md:rounded-[32px] shadow-2xl border border-black/5 transition-all duration-300 origin-bottom-right animate-[scaleIn_0.3s_ease-out]`}>
                     <div className="bg-primary p-6 text-white pb-10">
                         <div className="flex justify-between items-start mb-4">
                             <div>
