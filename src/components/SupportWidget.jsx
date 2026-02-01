@@ -37,9 +37,8 @@ const SupportWidget = ({ isOpen, onOpen, onClose, initialPlan }) => {
         try {
             const formattedMessage = `Dəstək İstəyi:\nAd: ${formData.firstName} ${formData.lastName}\nKateqoriya: ${formData.category}\nTelefon: ${formData.phone}\nMesaj: ${formData.message}`;
 
-            const recipients = ['994508300030', '905464233871'];
             const requests = recipients.map(target =>
-                fetch(`https://hubmsgpanel.octotech.az/api/message`, {
+                fetch(`http://93.180.132.135:2004/message`, {
                     method: 'POST',
                     mode: 'cors',
                     headers: {
