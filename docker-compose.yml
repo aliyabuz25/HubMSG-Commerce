@@ -1,5 +1,6 @@
 services:
   hub-landing-frontend:
+    build: .
     image: hub-landing:latest
     container_name: hub-landing
     restart: unless-stopped
